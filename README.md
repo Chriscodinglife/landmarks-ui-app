@@ -1,6 +1,6 @@
 # landmarks-ui-app
-Following the tutorial from Apple's dev site: https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
 
+Following the tutorial from Apple's dev site: [Landmarks UI](https://developer.apple.com/tutorials/swiftui/creating-and-combining-views)
 
 ## Some important concepts
 
