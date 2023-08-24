@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import Combine
 
-var landmarks: [Landmark] = load("landmarkData.json")
+final class ModelData: ObservableObject {
+    @Published var landmarks: [Landmark] = load("landmarkData.json")
+    
+}
+
 
 // The load function below is for loading in a file and to conform it to a specific type.
 // In the landmarks variable above, I pass in the expected type of [Array] of "Landmark" which is exactly the struct we created in the Landmark.swift file

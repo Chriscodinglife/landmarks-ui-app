@@ -260,3 +260,56 @@ List {
 ```
 
 ![toggle](images/toggle.png)
+
+- A definition on Observable Objects:
+
+> An observable object is a custom object for your data that can be bound to a view from storage in SwiftUI’s environment. SwiftUI watches for any changes to observable objects that could affect a view, and displays the correct version of the view after a change.
+
+Basically if the data changes in an observable object, the view will change. It is like a binding.
+
+So when you want some data that could change to be reflected in a view, you can use the ObservableObject Protocol attached to a class, and then used @Published on a variable so that your app can know that whenever changes are made, that variable will be used to look for changes:
+
+```Swift
+final class ModelData: ObservableObject {
+    @Published var landmarks: [Landmark] = load("landmarkData.json")
+    
+}
+```
+
+- This is getting hard to understand, so:
+
+> .environmentObject(modelData): This modifier is applied to the ContentView and injects the modelData instance into the environment of the view hierarchy. This means that any view within the ContentView hierarchy can access the modelData instance without needing to pass it explicitly.
+
+```Swift
+import SwiftUI
+
+@main
+struct LandmarksApp: App {
+    
+    @StateObject private var modelData = ModelData()
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environmentObject(modelData)
+        }
+    }
+}
+
+```
+
+So essentially above, every view that is in the heirarchy of `ContentView()` will be able to access the environmentObject modelData. This seems to be very powerful because we don't need to _explicitly_ pass modelData to all our views. The views can just access it! Cool 😎
+
+- Check out this code: 
+
+```Swift
+var landmarkIndex: Int {
+    modelData.landmarks.firstIndex(where: { $0.id == landmark.id })!
+}
+```
+
+So the $0.id, is used in a closure, and the where basically runs an iterator that checks where in the model data matches that of a landmark id, and returns the firstindex that satisfies this. The $0 represents each individual element in the landmarks array as the closure iterates through it. This part checks if the id of the current element ($0.id) matches the id of the landmark in question (landmark.id).
+
+! at the end: The ! is the force unwrapping operator. It's used at the end of the line to forcefully unwrap the result of firstIndex(where:). This assumes that the closure inside firstIndex(where:) will always find a matching index. If it doesn't, a runtime crash will occur.
+
+Just a fancy way to say: `compute the index of the input landmark by comparing it with the model data.`
