@@ -185,8 +185,7 @@ struct LandmarkList: View {
 
 - A binding in swift is denoted by `$` like `$region` variable. This is used to make a two way directional variable the gets updated by user interactions:
 
-> The Map view takes a coordinateRegion parameter that requires a `Binding<MKCoordinateRegion>`. By using $region, you're passing a binding to the coordinateRegion parameter, allowing the map to update its region based on changes to the region property. Similarly, if the map's region changes due to user interactions, the region property will automatically be updated.
-> In essence, using $region establishes a dynamic link between the region property (which is marked as @State and thus can change) and the map's coordinateRegion, ensuring that changes in one are immediately reflected in the other.
+> The Map view takes a coordinateRegion parameter that requires a `Binding<MKCoordinateRegion>`. By using $region, you're passing a binding to the coordinateRegion parameter, allowing the map to update its region based on changes to the region property. Similarly, if the map's region changes due to user interactions, the region property will automatically be updated. In essence, using $region establishes a dynamic link between the region property (which is marked as @State and thus can change) and the map's coordinateRegion, ensuring that changes in one are immediately reflected in the other.
 
 ```Swift
 // Here we declare the view and make a binding (two way connection
