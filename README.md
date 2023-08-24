@@ -244,3 +244,7 @@ NavigationView {
 ```
 
 ![navtitle](images/navigationtitle.png)
+
+- Always create a @State as private
+
+>Because you use state properties to hold information that’s specific to a view and its subviews, you always create state as private.
