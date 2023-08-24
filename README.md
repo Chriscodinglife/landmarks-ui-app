@@ -21,6 +21,24 @@ This is part of the tutorial from this site here: [Landmarks UI](https://develop
     )
 ```
 
+- So @State is this:
+
+> @State is a property wrapper that allows you to declare a property whose value can change over time, and when the value changes, the user interface that uses this value will automatically be updated to reflect the change.
+
+```Swift
+    // Using @State allows the user interface and this 
+    // region variable to updated as changes are made. 
+    // This makes it so the user can interact with the map
+    
+    // We also set a default for the 
+    // region location using MKCoordinateRegion 
+    // and setting the center and span
+    @State private var region = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 34.011_286, longitude: -116.166_868),
+            span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+        )
+```
+
 Looks like Apple Dev says State as the [following](https://developer.apple.com/documentation/swiftui/state):
 > Use state as the single source of truth for a given value type that you store in a view hierarchy. Create a state value in an App, Scene, or View by applying the @State attribute to a property declaration and providing an initial value. Declare state as private to prevent setting it in a memberwise initializer, which can conflict with the storage management that SwiftUI provides:
 
@@ -163,3 +181,67 @@ struct LandmarkList: View {
         // Otherwise you would need to do List(landmarks, id: \.id) 
     }
 }
+```
+
+- A binding in swift is denoted by `$` like `$region` variable. This is used to make a two way directional variable the gets updated by user interactions:
+
+> The Map view takes a coordinateRegion parameter that requires a `Binding<MKCoordinateRegion>`. By using $region, you're passing a binding to the coordinateRegion parameter, allowing the map to update its region based on changes to the region property. Similarly, if the map's region changes due to user interactions, the region property will automatically be updated.
+> In essence, using $region establishes a dynamic link between the region property (which is marked as @State and thus can change) and the map's coordinateRegion, ensuring that changes in one are immediately reflected in the other.
+
+```Swift
+// Here we declare the view and make a binding (two way connection
+    // for region
+    
+    var body: some View {
+        Map(coordinateRegion: $region)
+    }
+```
+
+- You can use `Scroll View` Container to allow a user to scroll on a screen
+
+```Swift
+
+    ...
+    ScrollView {
+        MapView(coordinate: landmark.locationCoordinate)
+            .ignoresSafeArea(edges: .top)
+            .frame(height: 300)
+    
+    ...
+
+```
+
+- Below is an example of how in your Detail view you can set .navigationTitle() to something. This can only be actually viewed though when your Detail is part of a Navigation Context
+
+```Swift
+struct LandmarkDetail: View {
+    var landmark: Landmark
+    
+    var body: some View {
+        
+        ScrollView {
+           // view stuff
+        }
+        .navigationTitle(landmark.name) // This here
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+```
+
+- And then look at the top navigation here, we are calling LandMark Detail. So within a view we can actually set methods related to navigation when its in the context of a navigation.
+
+```Swift
+NavigationView {
+            List(landmarks) { landmark in
+                NavigationLink {
+                    LandmarkDetail(landmark: landmark)
+                } label: {
+                    LandmarkRow(landmark: landmark)
+                }
+                
+            }
+            .navigationTitle("Landmarks")
+        }
+```
+
+![navtitle](images/navigationtitle.png)

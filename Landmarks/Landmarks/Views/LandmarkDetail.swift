@@ -12,10 +12,10 @@ struct LandmarkDetail: View {
     
     var body: some View {
         
-        VStack {
-//            MapView()
-//                .ignoresSafeArea(edges: .top)
-//                .frame(height: 300)
+        ScrollView {
+            MapView(coordinate: landmark.locationCoordinate)
+                .ignoresSafeArea(edges: .top)
+                .frame(height: 300)
             
             CircleImage(image: landmark.image)
                 .offset(y: -130)
@@ -35,15 +35,15 @@ struct LandmarkDetail: View {
                 
                 Divider()
                 
-                Text(landmark.description)
+                Text("About \(landmark.name)")
                     .font(.title2)
-                Text("Honestly, I never been here 😪")
+                Text(landmark.description)
                 
             }
             .padding()
-            Spacer()
-            
         }
+        .navigationTitle(landmark.name)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
