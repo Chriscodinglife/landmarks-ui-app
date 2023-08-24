@@ -1,4 +1,4 @@
-# landmarks-ui-app
+# Landmarks UI App
 
 Playing with SwiftUI with IOS, was able to create this basic Map View:
 ![image5](images/image5.png)
@@ -115,3 +115,51 @@ do {
         fatalError("Could not decode \(filename) as \(T.self): \(error)")
     }
 ```
+
+- Depending where you put a `Spacer()` in your stacks, you can make it literally push all your content to a certain side:
+![spacer](images/spacer.png)
+![spacerleft](images/spacerleft.png)
+
+- You can actually customize how previews are dispalyed in your code according to [Apple](https://developer.apple.com/tutorials/swiftui/building-lists-and-navigation#Customize-the-Row-Preview):
+
+> Xcode’s canvas automatically recognizes and displays any type in the current editor that conforms to the PreviewProvider protocol. A preview provider returns one or more views, with options to configure the size and device. You can customize the returned content from a preview provider to render exactly the previews that are most helpful to you.
+
+- `some View` lets you tell Swift that you can return basically anything (because your views can be complex) but still basically return a View. It's an "opaque return"
+
+```Swift
+struct LandmarkList: View {
+    var body: some View {
+        do something
+        }
+    }
+}
+```
+
+- You can iterate through lists, but you also need to pass it unique iterable identification (such as a id variable) if it is not already adhering to the Identifiable protocol. If you set a structure to adhere to the Identifiable protocol, then you don't need to set the id parameter for the `List()` method. Also below are closures are closures, you basically tell how each iterable item in a list can be used. It is like a for loop. Basically closures are another name for lambda expressions:
+
+```Swift
+// Adhering your structure to the Identifiable protocol
+struct Landmark: Hashable, Codable, Identifiable {
+    
+    var id: Int
+    ...
+```
+
+```Swift
+// closures
+{ this_iterable in 
+    do something
+}
+```
+
+```Swift
+
+// Leveraging the List method and not having to pass in the id: attribute
+struct LandmarkList: View {
+    var body: some View {
+        List(landmarks) { landmark in
+            LandmarkRow(landmark: landmark)
+        }
+        // Otherwise you would need to do List(landmarks, id: \.id) 
+    }
+}
