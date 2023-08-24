@@ -248,3 +248,15 @@ NavigationView {
 - Always create a @State as private
 
 >Because you use state properties to hold information that’s specific to a view and its subviews, you always create state as private.
+
+- You can add `Toggle()` to create a sliding button
+
+```Swift
+List {
+    Toggle(isOn: $showFavoritesOnly) {
+        Text("Favorites only")
+    }
+    ...
+```
+
+![toggle](images/toggle.png)
