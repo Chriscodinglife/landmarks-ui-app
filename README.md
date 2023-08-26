@@ -313,3 +313,59 @@ So the $0.id, is used in a closure, and the where basically runs an iterator tha
 ! at the end: The ! is the force unwrapping operator. It's used at the end of the line to forcefully unwrap the result of firstIndex(where:). This assumes that the closure inside firstIndex(where:) will always find a matching index. If it doesn't, a runtime crash will occur.
 
 Just a fancy way to say: `compute the index of the input landmark by comparing it with the model data.`
+
+- I honestly didn't know what a structure was but apparantly there is a difference and structures are simpler, they don't support inheritance and don't require initializers. Classes do.
+
+- Jesus I get it:
+    - CGPoint for an XY coordinate
+    - CGFloat for a decimal
+    - rotationEffect() for rotating stuff
+    - GeometryReader {} to pass to a Path {} the size of its container.
+    - You can use CGPoint to draw lines from one point to the next with fancy maths
+    - Can use ZStack {} to stack objects on top of each other like Views
+    - scaleEffect for Scaling
+    - Position for guess what?
+
+- The purpose of GeometryReader is to:
+
+> to dynamically draw, position, and size views instead of hard-coding numbers that might not be correct when you reuse a view somewhere else in your app, or on a different-sized display.
+
+Example:
+
+```Swift
+GeometryReader { geometry in
+    badgeSymbols // This is a view
+        .scaleEffect(1.0 / 4.0, anchor: .top)
+        .position(x: geometry.size.width / 2.0, y: (3.0 / 4.0) * geometry.size.height)
+            }
+```
+
+- Things like rotationEffect() and scaleEffect can be animated using .animation()
+
+Example:
+
+```Swift
+                Button {
+                    showDetail.toggle()
+                } label: {
+                    Label("Graph", systemImage: "chevron.right.circle")
+                        .labelStyle(.iconOnly)
+                        .imageScale(.large)
+                        .rotationEffect(.degrees(showDetail ? 90 : 0))
+                        .padding()
+                        .animation(.easeInOut, value: showDetail)
+                }
+```
+
+![animation](images/animation.gif)
+
+- withAnimation {} can be used to give an entire view a faded animation
+
+```Swift
+Button {
+                    withAnimation {
+                        showDetail.toggle()
+                    }
+```
+
+![animationview](images/animationview.gif)
