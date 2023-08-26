@@ -300,7 +300,7 @@ struct LandmarksApp: App {
 
 So essentially above, every view that is in the heirarchy of `ContentView()` will be able to access the environmentObject modelData. This seems to be very powerful because we don't need to _explicitly_ pass modelData to all our views. The views can just access it! Cool 😎
 
-- Check out this code: 
+- Check out this code:
 
 ```Swift
 var landmarkIndex: Int {
@@ -317,14 +317,14 @@ Just a fancy way to say: `compute the index of the input landmark by comparing i
 - I honestly didn't know what a structure was but apparantly there is a difference and structures are simpler, they don't support inheritance and don't require initializers. Classes do.
 
 - Jesus I get it:
-    - CGPoint for an XY coordinate
-    - CGFloat for a decimal
-    - rotationEffect() for rotating stuff
-    - GeometryReader {} to pass to a Path {} the size of its container.
-    - You can use CGPoint to draw lines from one point to the next with fancy maths
-    - Can use ZStack {} to stack objects on top of each other like Views
-    - scaleEffect for Scaling
-    - Position for guess what?
+  - CGPoint for an XY coordinate
+  - CGFloat for a decimal
+  - rotationEffect() for rotating stuff
+  - GeometryReader {} to pass to a Path {} the size of its container.
+  - You can use CGPoint to draw lines from one point to the next with fancy maths
+  - Can use ZStack {} to stack objects on top of each other like Views
+  - scaleEffect for Scaling
+  - Position for guess what?
 
 - The purpose of GeometryReader is to:
 
@@ -369,3 +369,38 @@ Button {
 ```
 
 ![animationview](images/animationview.gif)
+
+- Extensions are sort of like @decorators in Python
+
+```Swift
+extension AnyTransition {
+    static var moveAndFade: AnyTransition {
+        AnyTransition.slide
+    }
+}
+```
+
+- To prevent the following code from having the rotationEffect from being animated:
+
+```Swift
+Label("Graph", systemImage: "chevron.right.circle")
+    .labelStyle(.iconOnly)
+    .imageScale(.large)
+    .rotationEffect(.degrees(showDetail ? 90 : 0))
+    .scaleEffect(showDetail ? 1.5 : 1)
+    .padding()
+    .animation(.spring(), value: showDetail)
+```
+
+You can do the following:
+
+```Swift
+Label("Graph", systemImage: "chevron.right.circle")
+    .labelStyle(.iconOnly)
+    .imageScale(.large)
+    .rotationEffect(.degrees(showDetail ? 90 : 0))
+    .animation(nil, value: showDetail) // Basically nill with the .animation modifier
+    .scaleEffect(showDetail ? 1.5 : 1)
+    .padding()
+    .animation(.spring(), value: showDetail)
+```
