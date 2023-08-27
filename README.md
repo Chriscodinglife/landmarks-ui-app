@@ -267,7 +267,9 @@ List {
 
 Basically if the data changes in an observable object, the view will change. It is like a binding.
 
-So when you want some data that could change to be reflected in a view, you can use the ObservableObject Protocol attached to a class, and then used @Published on a variable so that your app can know that whenever changes are made, that variable will be used to look for changes:
+So when you want some data that could change to be reflected in a view, you can use the ObservableObject Protocol attached to a class, and then used @Published on a variable so that your app can know that whenever changes are made, that variable will be used to look for changes, and persist those changes
+
+- Some More info on the @Published var: https://www.hackingwithswift.com/quick-start/swiftui/what-is-the-published-property-wrapper
 
 ```Swift
 final class ModelData: ObservableObject {
@@ -404,3 +406,137 @@ Label("Graph", systemImage: "chevron.right.circle")
     .padding()
     .animation(.spring(), value: showDetail)
 ```
+
+- To Build navigation view heirarchy, or basically a way to create views within views, use navigation views and navigation links:
+
+```Swift
+struct CategoryHome: View {
+    var body: some View {
+        NavigationView {
+            Text("Hello, World!")
+        }
+    }
+}
+```
+
+- Supposedly Swift is a two pass compiler? Not sure if that is accurate. That is why we can call the enum created below, before the enum is actually created and available for referencing:
+
+```Swift
+var category: Category
+enum Category: String, CaseIterable, Codable {
+    case lakes = "Lakes"
+    case rivers = "Rivers"
+    case mountains = "Mountains"
+}
+```
+
+- Also CaseIterable allows us to iterate later on all the available cases of the Category enum
+
+let allCategories = Category.allCases
+print(allCategories) // [Category.lakes, Category.rivers, Category.mountains]
+
+- This really reminds me of how we can use for loops in JavaScript below. Basically we are creating a list, using forEach to go through categories based on the keys of the category.
+
+```JavaScript
+// Java Script
+for (let i = 0; i < cars.length; i++) {
+  text += cars[i] + "<br>";
+}
+```
+
+```Swift
+// Swift
+List {
+    ForEach(modelData.categories.keys.sorted(), id: \.self) { key in
+        Text(key)
+    }
+}
+```
+
+![foreach](images/listforeach.png)
+
+- Check out this code and what it does:
+  - We create a state variable with a default value of the enum Tab with the case featured using `Tab = .featured` which is basically `Tab.featured`
+  - We create an enum called `Tab` and give it two cases
+  - We then create a `TabView` in the body and then set the selection value to the default selection.
+  - We then set `.tags` for each view we set in the TabView `(CategoryHome and LandmarkList)` and set them to the enum case specified for them.
+  - So we are basically using an enum, to create a Tab that we can then decide which view to show based on a selection that is binded to the user input
+
+```Swift
+struct ContentView: View {
+    @State private var selection: Tab = .featured
+    
+    enum Tab {
+        case featured
+        
+        case list
+    }
+    
+    var body: some View {
+        TabView (selection: $selection) {
+            CategoryHome()
+                .tag(Tab.featured)
+            
+            LandmarkList()
+                .tag(Tab.list)
+        }
+        
+        
+    }
+}
+```
+
+- To create a Tab like navigation on the screen we use `TabView` and then we use `.tabitem` with `Label()` to give the buttons names and an image. So cool.
+
+```Swift
+var body: some View {
+        TabView (selection: $selection) { // TabView View item
+            CategoryHome()
+                .tabItem { //.tabitme to display the specific tab to a bottom navbar
+                    Label("Featured", systemImage: "star")
+                }
+                .tag(Tab.featured)
+            
+            LandmarkList()
+                .tabItem { // another .tabitem
+                    Label("List", systemImage: "list.bullet")
+                }
+                .tag(Tab.list)
+        }
+     
+```
+
+![tabnav](images/tabnav.png)
+
+- Let's say we have a key word that is used by swift but you want to use it, you want to wrap the word in back ticks like this
+
+```Swift
+static let `default` = Profile(username: "c_orellana")
+```
+
+- God I wish i understood why the hell this is written this way:
+  - More info here: https://developer.apple.com/documentation/swiftui/editmode
+
+```Swift
+@Environment(\.editMode) var editMode
+```
+
+So basically editMode is how you set a mode for the user to be able to edit certain values for a given view.
+
+
+
+- There is this really cool thing called toolbar modifiers and you can use them to literally create toolbars for your apps
+
+```Swift
+.toolbar {
+        Button {
+            showingProfile.toggle()
+        } label: {
+            Label("User Profile", systemImage: "person.crop.circle")
+        }
+    }
+```
+
+![toolbar](images/toolbar.png)
+
+- UIViewControllers and UIViewControllerRepresentables make no sense. -.-
