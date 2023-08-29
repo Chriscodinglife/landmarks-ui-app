@@ -540,3 +540,34 @@ So basically editMode is how you set a mode for the user to be able to edit cert
 ![toolbar](images/toolbar.png)
 
 - UIViewControllers and UIViewControllerRepresentables make no sense. -.-
+
+- Here are some points regarding this code here with UIKit and translating UIKit to SwiftUI:
+
+```Swift
+import SwiftUI
+import UIKit
+
+struct PageViewController<Page: View>: UIViewControllerRepresentable {
+    var pages: [Page]
+    
+    func makeUIViewController(context: Context) -> UIPageViewController {
+        let pageViewController = UIPageViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal
+        )
+        
+        return pageViewController
+        
+    }
+    
+    func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
+        pageViewController.setViewControllers(
+            [UIHostingController(rootView: pages[0])], direction: .forward, animated: true)
+    }
+}
+```
+- UIPageViewController: It's like a magical book for your app's UI, managing pages (view controllers) that you can swipe through like turning pages in a book. It's part of UIKit and brings swipe navigation to your app.
+- UIViewControllerRepresentable: This is your translator, letting you bridge the gap between the powerful, older UIKit spells and the modern SwiftUI magic. You create a custom struct conforming to this protocol to make UIKit elements usable in SwiftUI.
+- UIPageViewController + UIViewControllerRepresentable: You combine these to create a magical. The UIViewControllerRepresentable struct acts as your translator, allowing SwiftUI to manage and update the UIKit-based page flipping experience.
+- makeUIViewController: This spell helps you craft the - UIPageViewController – your magical book – defining its transition style and orientation.
+- updateUIViewController: This enchantment lets you add content to your magical book. It sets up the pages, which are SwiftUI views, and lets you navigate through them using smooth animations.
