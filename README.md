@@ -269,7 +269,7 @@ Basically if the data changes in an observable object, the view will change. It 
 
 So when you want some data that could change to be reflected in a view, you can use the ObservableObject Protocol attached to a class, and then used @Published on a variable so that your app can know that whenever changes are made, that variable will be used to look for changes, and persist those changes
 
-- Some More info on the @Published var: https://www.hackingwithswift.com/quick-start/swiftui/what-is-the-published-property-wrapper
+- Some More info on the [@Published var](https://www.hackingwithswift.com/quick-start/swiftui/what-is-the-published-property-wrapper)
 
 ```Swift
 final class ModelData: ObservableObject {
@@ -515,15 +515,13 @@ static let `default` = Profile(username: "c_orellana")
 ```
 
 - God I wish i understood why the hell this is written this way:
-  - More info here: https://developer.apple.com/documentation/swiftui/editmode
+  - More info [here](https://developer.apple.com/documentation/swiftui/editmode)
 
 ```Swift
 @Environment(\.editMode) var editMode
 ```
 
 So basically editMode is how you set a mode for the user to be able to edit certain values for a given view.
-
-
 
 - There is this really cool thing called toolbar modifiers and you can use them to literally create toolbars for your apps
 
@@ -566,6 +564,7 @@ struct PageViewController<Page: View>: UIViewControllerRepresentable {
     }
 }
 ```
+
 - UIPageViewController: It's like a magical book for your app's UI, managing pages (view controllers) that you can swipe through like turning pages in a book. It's part of UIKit and brings swipe navigation to your app.
 - UIViewControllerRepresentable: This is your translator, letting you bridge the gap between the powerful, older UIKit spells and the modern SwiftUI magic. You create a custom struct conforming to this protocol to make UIKit elements usable in SwiftUI.
 - UIPageViewController + UIViewControllerRepresentable: You combine these to create a magical. The UIViewControllerRepresentable struct acts as your translator, allowing SwiftUI to manage and update the UIKit-based page flipping experience.
